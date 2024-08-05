@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { deleteCourseById, getCourseById } from "../../api/coursesController/courses";
 import { Button, Stack, Typography } from "@mui/material";
+import { UserContext } from "../../context/Context";
 
 /**
  * 
@@ -28,6 +29,8 @@ import { Button, Stack, Typography } from "@mui/material";
 
 export default function CourseInfoPage() {
     const [courseInfo,setCourseInfo] = useState();
+
+    const {userId  , isAdmin  } = useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -60,7 +63,7 @@ export default function CourseInfoPage() {
             </Stack>
          </Stack>
          {
-            localStorage.getItem("admin")&&
+            isAdmin&&
             <Button sx={{margin:"auto"}} variant="contained" onClick={()=>{
                 deleteCourseById(courseInfo.id);
                 navigate("/courses");
